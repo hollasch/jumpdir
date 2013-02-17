@@ -83,6 +83,27 @@ Strategies
        "H:/injex/botox/clu/fle".
 
 ________________________________________________________________________________
+Virtual Drive Labels
+
+    Provide an aliasing mechanism to map a label to any of the following:
+
+        * server share
+        * disk letter
+        * path (like subst)
+
+    For example,
+
+        > go cdrom:\docs\pdf
+        > go local1:\
+        > go msprod:Visual Studio 2010
+
+________________________________________________________________________________
+Unicode
+    The old setdir command does not properly handle directories with Unicode
+    (non-Latin1) characters. Verify the jumpdir properly handles these
+    directories. My music collection contains a lot of directories like this.
+
+________________________________________________________________________________
 Jump Data File
 
     %JUMPDAT%                 (user-defined)
@@ -117,13 +138,6 @@ Note: Guard against attempt to reuse remembered connections
 
     Since jumpdir is its own type of persistent connection, all jumpdir-mapped
     connections should not be persistent.
-
-________________________________________________________________________________
-Feature: -prefer option to bubble up preferred paths.
-
-    > go -prefer c:/srh/...
-
-    would move all matching paths to the top of the history stack.
 
 ________________________________________________________________________________
 Feature: Use ellipsis matching for history fetch
@@ -193,7 +207,12 @@ Context Bubbling
     This could be useful, for example, when you navigate amongst three
     enlistments to the same tree.  Here, you could bubble up all entries
     under one of the trees, so that tree would have priority when
-    searching. See also the "Search along current directory" entry below.
+    searching. See also the "Search along current directory" entry below. For
+    example:
+
+    > go -prefer c:/srh/...
+
+    would move all matching paths to the top of the history stack.
 
 ________________________________________________________________________________
 Directory Pinning
@@ -281,16 +300,27 @@ Wildcard Paths + Netmapped Drives
     match.
 
 ________________________________________________________________________________
-Search Along Current Directory
+Search Along Current Directory / Prefer Nearest
 
     Today setdir works like this:
 
-        D:\family\FCES\PTSA> go ck*origin
+        D:\family\FCES\PTSA> go ck...origin
         D:\family\CKMS\PTSA\directory\2008\data\origin> go ptsa
         D:\family\FCES\PTSA>
 
     Since we went to a directory under CKMS/, the second go command might
     prefer that path, rather than jumping to the FCES/ variant.
+
+    Another way of describing this is to switch priority from the usual
+    chronological priority to an ancestral priority (that is, choose the
+    resulting match with the nearest relation distance (up to common ancestor
+    directory and back down to the new directory).
+
+    In the example above with the second go command {ptsa},
+    D:\family\FCES\PTSA\directory\2008\data\origin is eight hops away, while
+    D:\family\ CES\PTSA\directory\2008\data\origin would be four hops away.
+
+    Perhaps a "-n" switch would trigger a nearest match search.
 
 ________________________________________________________________________________
 Duplicate Entries from Shortened Names
@@ -307,3 +337,12 @@ Add an "aggressiveness" option to control how aggressive search is
 
     Ordered by potential time impact. For example, net search is high, hitting
     historically visited paths is low.
+
+________________________________________________________________________________
+Implement Sparse Matching
+
+    As an alternative to using ellipsis path matching, provide a way to make a
+    sparse match which matches characters in order with any number of
+    interleaving characters (equivalent to putting ".*" between every character
+    in the match). Perhaps prefixed with an escape character to denote a sparse
+    match.
