@@ -346,3 +346,10 @@ Implement Sparse Matching
     interleaving characters (equivalent to putting ".*" between every character
     in the match). Perhaps prefixed with an escape character to denote a sparse
     match.
+
+________________________________________________________________________________
+Support ~ for home
+
+    Users should be able to start their path with a tilde directory to denote
+    either the HOME directory or, if HOME is undefined, the USERPROFILE
+    directory.
