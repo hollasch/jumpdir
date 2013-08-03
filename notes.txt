@@ -82,6 +82,13 @@ Strategies
        "tox/clu/fle", and we've been to "H:/injex/botox", then try
        "H:/injex/botox/clu/fle".
 
+
+________________________________________________________________________________
+Result Path Echo
+
+    Add an option to print the selected path, but without actually changing to
+    it.
+
 ________________________________________________________________________________
 Virtual Drive Labels
 
