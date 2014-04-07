@@ -1,7 +1,20 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
-Project("{8BC9CEB9-8B4A-11D0-8D11-00A0C91BC942}") = "jumpdir.exe", "jumpdir.exe", "{20ECBA54-F6BC-47C7-AC1E-06AD92760F2D}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "jumpdir", "jumpdir.exe", "{20ECBA54-F6BC-47C7-AC1E-06AD92760F2D}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = C:\Users\Steve\SkyDrive\srh\dev\pub\jumpdir\jumpdir.exe
+		RemoteMachine = SRHDESK
+		StartingDirectory = C:\Users\Steve\SkyDrive\srh\dev\pub\jumpdir
+		Environment = Default
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		UseLegacyDebugEngines = No
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
