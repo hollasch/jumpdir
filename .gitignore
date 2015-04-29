@@ -1,5 +1,7 @@
 # Git Ignore File for 'JumpDir' Project
 
+out/
+
 *.exe
 *.ilk
 *.obj
