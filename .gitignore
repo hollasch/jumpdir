@@ -6,4 +6,5 @@ out/
 *.ilk
 *.obj
 *.pdb
+*.sdf
 *.suo
