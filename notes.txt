@@ -38,19 +38,19 @@ Jump Data File
     Use binary data file, with optional XML import/export.
 
 ________________________________________________________________________________
-Option: -clean [pattern]
+Option: --clean [pattern]
 
     When auto clean is implemented. Examine all historical entries that match
     the given pattern (default pattern is "..."). Entries that no longer exist
     are removed from the history.
 
 ________________________________________________________________________________
-Option: -purge [pattern]
+Option: --purge [pattern]
 
     Purge all historical entries matching the given pattern.
 
 ________________________________________________________________________________
-Option: -push
+Option: --push
 
     Invoke "pushd ." before changing directories.
 
@@ -103,7 +103,7 @@ Feature: File Search
     Add an option to go to the most recent directory that contains the
     specified file, like so:
 
-        C:\> go -f jumpdir.dat
+        C:\> go --file jumpdir.dat
         D:\srh> 
 
     An optional enhancement to this would be to go to the most recent
@@ -113,7 +113,7 @@ ________________________________________________________________________________
 Feature: Bare History List
 
     Add an option to give a bare list of the historical entries. This would
-    be identical to the -list option, except that output lines would not be
+    be identical to the --list option, except that output lines would not be
     prefixed with the slot number.
 
 ________________________________________________________________________________
@@ -136,7 +136,7 @@ Context Bubbling
     searching. See also the "Search along current directory" entry below. For
     example:
 
-    > go -prefer c:/srh/...
+    > go --prefer c:/srh/...
 
     would move all matching paths to the top of the history stack.
 
@@ -246,7 +246,7 @@ Search Along Current Directory / Prefer Nearest
     D:\family\FCES\PTSA\directory\2008\data\origin is eight hops away, while
     D:\family\ CES\PTSA\directory\2008\data\origin would be four hops away.
 
-    Perhaps a "-n" switch would trigger a nearest match search.
+    Perhaps a "--nearest" switch would trigger a nearest match search.
 
 ________________________________________________________________________________
 Duplicate Entries from Shortened Names
