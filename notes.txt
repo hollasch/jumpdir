@@ -1,6 +1,5 @@
-
 JUMPDIR Feature List
-~~~~~~~~~~~~~~~~~~~~
+=====================
 
 ________________________________________________________________________________
 Result Path Echo
@@ -19,14 +18,14 @@ Virtual Drive Labels
 
     For example,
 
-        > go cdrom:\docs\pdf
-        > go local1:\
+        > go cdrom:/docs/pdf
+        > go local1:
         > go msprod:Visual Studio 2010
 
 ________________________________________________________________________________
 Unicode
     The old setdir command does not properly handle directories with Unicode
-    (non-Latin1) characters. Verify the jumpdir properly handles these
+    (non-Latin1) characters. Verify that jumpdir properly handles these
     directories. My music collection contains a lot of directories like this.
 
 ________________________________________________________________________________
