@@ -2,56 +2,11 @@ JUMPDIR Feature List
 =====================
 
 ________________________________________________________________________________
-Result Path Echo
-
-    Add an option to print the selected path, but without actually changing to
-    it.
-
-________________________________________________________________________________
-Virtual Drive Labels
-
-    Provide an aliasing mechanism to map a label to any of the following:
-
-        * server share
-        * disk letter
-        * path (like subst)
-
-    For example,
-
-        > go cdrom:/docs/pdf
-        > go local1:
-        > go msprod:Visual Studio 2010
-
-________________________________________________________________________________
-Unicode
-    The old setdir command does not properly handle directories with Unicode
-    (non-Latin1) characters. Verify that jumpdir properly handles these
-    directories. My music collection contains a lot of directories like this.
-
-________________________________________________________________________________
-Jump Data File
-
-    %JUMPDAT%                 (user-defined)
-    %USERPROFILE%/jumpdir.dat (default)
-
-    Use binary data file, with optional XML import/export.
-
-________________________________________________________________________________
 Option: --clean [pattern]
 
     When auto clean is implemented. Examine all historical entries that match
     the given pattern (default pattern is "..."). Entries that no longer exist
     are removed from the history.
-
-________________________________________________________________________________
-Option: --purge [pattern]
-
-    Purge all historical entries matching the given pattern.
-
-________________________________________________________________________________
-Option: --push
-
-    Invoke "pushd ." before changing directories.
 
 ________________________________________________________________________________
 Note: Guard against attempt to reuse remembered connections
@@ -63,21 +18,6 @@ Note: Guard against attempt to reuse remembered connections
 
     Since jumpdir is its own type of persistent connection, all jumpdir-mapped
     connections should not be persistent.
-
-________________________________________________________________________________
-Feature: Use ellipsis matching for history fetch
-
-    > go mypath/.../out
-
-    Matches existing historical entry "c:/srh/source/mypath/lab/work1/out"
-
-________________________________________________________________________________
-Feature: Use ellipsis matching to locate new directory
-
-    > go mypath/.../out
-
-    Matches new directory "c:/srh/source/mypath/lab/work1/out". This might need
-    some timeout or warning, as it could be long operation.
 
 ________________________________________________________________________________
 Increase Default History Size?
@@ -95,18 +35,6 @@ Note: Skip . and .. prefixed paths
 
     Paths beginning with . and .. should not be matched against historical
     entries -- it should be interpreted literally only.
-
-________________________________________________________________________________
-Feature: File Search
-
-    Add an option to go to the most recent directory that contains the
-    specified file, like so:
-
-        C:\> go --file jumpdir.dat
-        D:\srh> 
-
-    An optional enhancement to this would be to go to the most recent
-    directory that contains a file that matches the given fileglob.
 
 ________________________________________________________________________________
 Feature: Bare History List
@@ -138,91 +66,6 @@ Context Bubbling
     > go --prefer c:/srh/...
 
     would move all matching paths to the top of the history stack.
-
-________________________________________________________________________________
-Directory Pinning
-
-    Flag a directory so that it will not be retired.
-
-________________________________________________________________________________
-Subtree Scouting
-
-    Mark a directory for exhaustive search.  Could also take an integer
-    for the depth to search (0 means exhaustive).  Directories are flagged
-    for 1 level by default (2 means search subdirectories also).  For
-    example, "go -scout:2 D:\foo\bar" would add all directories up to two
-    levels down to the jumpdir history. This could also be accomplished by a
-    script. Another thought is that this could simultaneously remove
-    obsolete entries under the given subtree.
-
-________________________________________________________________________________
-Better Handling of Removable Media
-
-    Right now we ignore all directories on removable media. Provide a way
-    to log removable media directories, further specialized to the volume
-    name (or some other identifier).
-
-    Another idea: in order to avoid unnecessary spinup on high-latency
-    removable media, only check serial numbers and jump to removable directories
-    if the current directory is on that drive, or if the drive is specified on
-    the path.
-
-    For example:
-
-        C:/> go bar
-        No matching directory found for "alak".
-
-        C:/> go u:...bar
-
-        U:/foo/bar> c:
-
-        C:/> u:
-
-        U:/> go bar
-
-        U:/foo/bar>
-
-________________________________________________________________________________
-Context Scripts
-
-    Specify a script/executable to invoke when changing to a particular
-    directory.
-
-    Another idea -- specify a standard script (jumpdirrc.cmd) to invoke
-    if present in a directory.
-
-    Specify a script to invoke when changing to any directory in a
-    particular tree.
-
-    Problem: it's too easy to get to a directory via methods other than
-    jumpdir, so the results would be inconsistent.
-
-________________________________________________________________________________
-Shorter timeout for speculative network searches
-
-    Right now it takes a long time to try a speculative directory on a
-    network share if it doesn't exist (if the server is slow or the share no
-    longer exists.)  It would be nice to add a mechanism to specify a
-    shorter timeout period for such attempts.
-
-________________________________________________________________________________
-Auto Cleanup
-
-    jumpdir should automatically purge entries for directories that no longer
-    exist. This should happen whenever a historical match is found to no longer
-    exist. Additionally, jumpdir could randomly test an historical entry to
-    ensure that it still exists, provided it's not a slow drives, such as a
-    floppy drive. Another idea would be to tag each entry with a "freshness"
-    stamp. The item not checked for the greatest amount of time could be
-    chosen. All items could have their timestamps updated when last seen as
-    well. This wouldn't work well for network or removable drives, though.
-
-________________________________________________________________________________
-Wildcard Paths + Netmapped Drives
-
-    If drive X: is mapped to a network drive, then X:*foo should automatically
-    use the current sharename in place off the X: drive before performing the
-    match.
 
 ________________________________________________________________________________
 Search Along Current Directory / Prefer Nearest
@@ -271,10 +114,3 @@ Implement Sparse Matching
     interleaving characters (equivalent to putting ".*" between every character
     in the match). Perhaps prefixed with an escape character to denote a sparse
     match.
-
-________________________________________________________________________________
-Support ~ for home
-
-    Users should be able to start their path with a tilde directory to denote
-    either the HOME directory or, if HOME is undefined, the USERPROFILE
-    directory.
