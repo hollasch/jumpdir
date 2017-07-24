@@ -1,7 +1,7 @@
 //==============================================================================
 // jumpdir - A smart directory navigation command
 //
-// Copyright 2007 Steve Hollasch. All rights reserved.
+// Copyright 2017 Steve Hollasch. All rights reserved.
 //==============================================================================
 
 #include <ctype.h>
@@ -24,9 +24,9 @@ using namespace FSProxy;
 static const wchar_t *usage[] =
 {
 L"",
-L"jumpdir X-09 / 2007-12-02 / (c) 2007 Steve Hollasch",
+L"jumpdir v0.0.9 / © 2017 Steve Hollasch",
 L"",
-L"jumpdir: Adaptive directory change command",
+L"jumpdir: Adaptive directory navigation for the command line",
 L"Usage:   jumpdir <directory>",
 L"",
 L"    This command changes the directory as specified.",
