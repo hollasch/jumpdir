@@ -1,5 +1,5 @@
 //==================================================================================================
-// fileSystemProxyWindows.cpp
+// FileSystemProxyWindows.cpp
 //
 //     This file contains the definitions for the file system proxy classes for the Windows file
 //     system.
@@ -18,7 +18,7 @@
 // the License.
 //==================================================================================================
 
-#include "fileSystemProxyWindows.h"
+#include "FileSystemProxyWindows.h"
 #include <stdlib.h>
 #include <string>
 
@@ -74,4 +74,14 @@ const wchar_t* DirectoryIteratorWindows::name() const
 DirectoryIterator* FileSysProxyWindows::newDirectoryIterator (const wstring path) const
 {
     return new DirectoryIteratorWindows(path);
+}
+
+
+bool FileSysProxyWindows::setCurrentDirectory (const wstring path)
+{
+    // Sets the current working directory. Returns true if the directory is valid.
+    m_currentDir = path;
+
+    // NOT YET IMPLEMENTED: For now, just always accept the directory.
+    return true;
 }
