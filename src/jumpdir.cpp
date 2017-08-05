@@ -65,12 +65,12 @@ class JDFileHeader
   public:
 
     JDFileHeader ()
-      : maxHistSize    (-1),
-        dirEcho        (false),
-        verbose        (false),
-        netSearch      (true),
-        automap        (true),
-        numHistEntries (0)
+      : maxHistSize    {-1},
+        dirEcho        {false},
+        verbose        {false},
+        netSearch      {true},
+        automap        {true},
+        numHistEntries {0}
     {
         wcscpy_s (mc_verstring, c_version_string_length, c_verstring);
     }
@@ -103,7 +103,7 @@ struct DirEntry
 class JDMemPool
 {
   public:
-    JDMemPool () : m_size(0), m_heap(0) { }
+    JDMemPool () : m_size{0}, m_heap{0} { }
 
     void Attach (void* block, unsigned int size);
     bool InPool (void* ptr) const;
