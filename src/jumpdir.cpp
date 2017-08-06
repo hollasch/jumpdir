@@ -52,7 +52,6 @@ class JDContext;
 
 void DPrint        (const wchar_t *format, ...);
 void ErrorPrint    (const wchar_t *format, ...);
-bool ParseArgs     (JDContext&, int argc, const wchar_t * const argv[]);
 void PrintUsage    ();
 void SlashBackward (wchar_t *str);
 void SlashForeward (wchar_t *str);
