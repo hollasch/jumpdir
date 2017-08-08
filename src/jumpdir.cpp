@@ -1,8 +1,8 @@
-//==============================================================================
+//==================================================================================================
 // jumpdir - A smart directory navigation command
 //
 // Copyright 2017 Steve Hollasch. All rights reserved.
-//==============================================================================
+//==================================================================================================
 
 #include <ctype.h>
 #include <stdio.h>
@@ -58,7 +58,7 @@ void SlashForeward (wchar_t *str);
 bool wstreqic      (const wchar_t *str1, const wchar_t *str2);
 
 
-//==============================================================================
+//==================================================================================================
 class JDFileHeader
 {
   public:
@@ -86,7 +86,8 @@ class JDFileHeader
     unsigned int numHistEntries;  // Current count of path history entries
 };
 
-//==============================================================================
+
+//==================================================================================================
 struct DirEntry
 {
     unsigned int m_dvol_name;          // Offset of Volume Name
@@ -98,7 +99,8 @@ struct DirEntry
     DirEntry    *m_next;               // Next Directory Entry
 };
 
-//==============================================================================
+
+//==================================================================================================
 class JDMemPool
 {
   public:
@@ -112,7 +114,8 @@ class JDMemPool
     void         *m_heap;
 };
 
-//==============================================================================
+
+//==================================================================================================
 void JDMemPool::Attach (void *block, unsigned int size)
 {
     // This method sets the block and size for the memory pool, as read from the
@@ -127,7 +130,8 @@ void JDMemPool::Attach (void *block, unsigned int size)
     m_size = size;
 }
 
-//==============================================================================
+
+//==================================================================================================
 class JumpData
 {
   public:
@@ -148,7 +152,8 @@ class JumpData
     void   *m_datafile;        // Jump Data File Contents
 };
 
-//==============================================================================
+
+//==================================================================================================
 class JDContext
 {
     //--------------------------------------------------------------------------
@@ -158,7 +163,7 @@ class JDContext
   public:
 
     static const int c_numDrives = 26;
-    
+
     JDContext (FileSysProxy&);
     ~JDContext();
 
@@ -184,7 +189,7 @@ class JDContext
     JumpData m_jumpData;               // Jump Directory Data
 
     PathMatcher m_pathMatcher;         // Wildcard Path Matcher
- 
+
     wchar_t  m_cwd[MAX_PATH+1];        // Current Working Directory
     wchar_t* m_driveMaps[c_numDrives]; // Drive Network Mappings
 
@@ -193,7 +198,8 @@ class JDContext
     bool     m_destwild;               // Destination Contains Wildcards
 };
 
-//==============================================================================
+
+//==================================================================================================
 int wmain (int argc, const wchar_t * const argv[])
 {
     //--------------------------------------------------------------------------
@@ -225,7 +231,8 @@ int wmain (int argc, const wchar_t * const argv[])
     return 0;
 }
 
-//==============================================================================
+
+//==================================================================================================
 void PrintUsage ()
 {
     //--------------------------------------------------------------------------
@@ -234,8 +241,7 @@ void PrintUsage ()
 
     int i;
 
-    for (i=0;  usage[i];  ++i)
-    {
+    for (i=0;  usage[i];  ++i) {
         if (usage[i][0] == 0)
             _putws (L"echo.");
         else
@@ -243,7 +249,8 @@ void PrintUsage ()
     }
 }
 
-//==============================================================================
+
+//==================================================================================================
 void DPrint (const wchar_t *format, ...)
 {
     //--------------------------------------------------------------------------
@@ -266,7 +273,8 @@ void DPrint (const wchar_t *format, ...)
     va_end (vl);
 }
 
-//==============================================================================
+
+//==================================================================================================
 void ErrorPrint (const wchar_t *format, ...)
 {
     va_list vl;
@@ -279,7 +287,8 @@ void ErrorPrint (const wchar_t *format, ...)
     va_end (vl);
 }
 
-//==============================================================================
+
+//==================================================================================================
 inline bool wstreqic (const wchar_t *str1, const wchar_t *str2)
 {
     //--------------------------------------------------------------------------
@@ -295,30 +304,31 @@ inline bool wstreqic (const wchar_t *str1, const wchar_t *str2)
     return (str1 != 0) && (str2 != 0) && (0 == _wcsicmp(str1,str2));
 }
 
-//==============================================================================
+
+//==================================================================================================
 void SlashForeward (wchar_t *str)
 {
     wchar_t *ptr;
 
-    for (ptr=str;  *ptr;  ++ptr)
-    {
+    for (ptr=str;  *ptr;  ++ptr) {
        if (*ptr == '\\')
             *ptr = '/';
     }
 }
 
-//==============================================================================
+
+//==================================================================================================
 void SlashBackward (wchar_t *str)
 {
     wchar_t *ptr;
 
-    for (ptr=str;  *ptr;  ++ptr)
-    {
+    for (ptr=str;  *ptr;  ++ptr) {
        if (*ptr == '/') *ptr = '\\';
     }
 }
 
-//==============================================================================
+
+//==================================================================================================
 JDContext::JDContext (FileSysProxy& fsProxy)
   : m_fsProxy {fsProxy},
     m_pathMatcher {fsProxy}
@@ -333,13 +343,15 @@ JDContext::JDContext (FileSysProxy& fsProxy)
     m_destwild = false;
 }
 
-//==============================================================================
+
+//==================================================================================================
 JDContext::~JDContext ()
 {
     if (m_jumpdata_filename) delete m_jumpdata_filename;
 }
 
-//==============================================================================
+
+//==================================================================================================
 void JDContext::EnumerateNetMaps ()
 {
     DPrint (L"Enumerating network drive mappings.");
@@ -348,12 +360,12 @@ void JDContext::EnumerateNetMaps ()
     // char netName [MAX_PATH + 1];
     int  driveNum;
 
-    for (driveNum=0;  driveNum < c_numDrives;  ++driveNum)
-    {
+    for (driveNum=0;  driveNum < c_numDrives;  ++driveNum) {
     }
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JDContext::HandleTrivialChange ()
 {
     //--------------------------------------------------------------------------
@@ -367,16 +379,15 @@ bool JDContext::HandleTrivialChange ()
 
     // Bail out if the destination path contains wildcard characters.
 
-    if (m_destwild)
-    {   DPrint (L"Not trivial; destination path contains wildcards.");
+    if (m_destwild) {
+        DPrint (L"Not trivial; destination path contains wildcards.");
         return false;
     }
 
     // If no directory was specified, and if no other commands were supplied,
     // then echo the current directory.
 
-    if (m_dest[0] == 0)
-    {
+    if (m_dest[0] == 0) {
         DPrint (L"Null directory; echo current.");
         wprintf (L"echo %s\n", m_cwd);
         return true;
@@ -384,23 +395,23 @@ bool JDContext::HandleTrivialChange ()
 
     // If this is not a dot directory; then handle elsewhere.
 
-    if (m_dest[0] != '.')
-    {   DPrint (L"Not trivial (not null and not dot directory).");
+    if (m_dest[0] != '.') {
+        DPrint (L"Not trivial (not null and not dot directory).");
         return false;
     }
 
     // If the directory is literally ".", we're already there, so return true.
 
-    if (0 == wcscmp(m_dest, L"."))
-    {   DPrint (L"Literally '.'; no action.");
+    if (0 == wcscmp(m_dest, L".")) {
+        DPrint (L"Literally '.'; no action.");
         return true;
     }
 
     // If this is a path that begins with a single dot directory, then use that
     // path directly.
 
-    if (m_dest[1] == '/')
-    {   SlashBackward (m_dest);
+    if (m_dest[1] == '/') {
+        SlashBackward (m_dest);
         wprintf (L"cd \"%s\"\n", m_dest);
         return true;
     }
@@ -410,8 +421,8 @@ bool JDContext::HandleTrivialChange ()
 
     // If the first subdirectory is "..", then use that path directly.
 
-    if ((m_dest[2] == 0) || (m_dest[2] == '/'))
-    {   SlashBackward (m_dest);
+    if ((m_dest[2] == 0) || (m_dest[2] == '/')) {
+        SlashBackward (m_dest);
         wprintf (L"cd \"%s\"\n", m_dest);
         return true;
     }
@@ -419,7 +430,8 @@ bool JDContext::HandleTrivialChange ()
     return false;           // For all other paths, handle elsewhere.
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JDContext::Jump ()
 {
     //--------------------------------------------------------------------------
@@ -433,15 +445,15 @@ bool JDContext::Jump ()
 
     DPrint (L"Seeing if new target matches current directory.");
 
-    if (0 == _wcsicmp(m_cwd, m_dest))
-    {   DPrint (L"Tried to change to same directory as current.");
+    if (0 == _wcsicmp(m_cwd, m_dest)) {
+        DPrint (L"Tried to change to same directory as current.");
         return false;
     }
 
     DPrint (L"Attempting to change to \"%s\".", m_dest);
 
-    if (0 == _wchdir(m_dest))
-    {   DPrint (L"Successfully changed to \"%s\".", m_dest);
+    if (0 == _wchdir(m_dest)) {
+        DPrint (L"Successfully changed to \"%s\".", m_dest);
         wprintf (L"cd /d %s\n", m_dest);
         return true;
     }
@@ -451,8 +463,8 @@ bool JDContext::Jump ()
     return false;
 }
 
-//==============================================================================
 
+//==================================================================================================
 static bool isWildStr (const wchar_t* str)
 {
     return (*str == L'?')
@@ -460,8 +472,8 @@ static bool isWildStr (const wchar_t* str)
         || ((str[0] == L'.') && (str[1] == L'.') && (str[2] == L'.'));
 }
 
-//==============================================================================
 
+//==================================================================================================
 bool JDContext::AppendDest (const wchar_t *path)
 {
     size_t roomleft = sizeof(m_dest) - m_destlen - 1;
@@ -473,8 +485,8 @@ bool JDContext::AppendDest (const wchar_t *path)
     if (m_destlen > 0)
         m_dest[m_destlen++] = ' ';
 
-    for (;  *path != 0;  ++path, ++m_destlen)
-    {
+    for (;  *path != 0;  ++path, ++m_destlen) {
+
         if (!m_destwild && isWildStr(path))
             m_destwild = true;
 
@@ -489,10 +501,9 @@ bool JDContext::AppendDest (const wchar_t *path)
     return true;
 }
 
-//==============================================================================
-bool JDContext::ParseArgs (
-    int argc,
-    const wchar_t * const argv[])
+
+//==================================================================================================
+bool JDContext::ParseArgs (int argc, const wchar_t * const argv[])
 {
     //--------------------------------------------------------------------------
     // Parses the command-line arguments before executing commands. This
@@ -506,8 +517,7 @@ bool JDContext::ParseArgs (
 
     int argi;     // Argument Index
 
-    for (argi=1;  argi < argc;  ++argi)
-    {
+    for (argi=1;  argi < argc;  ++argi) {
         if (  wstreqic (argv[argi], L"-?")
            || wstreqic (argv[argi], L"/?")
            || wstreqic (argv[argi], L"-h")
@@ -519,18 +529,17 @@ bool JDContext::ParseArgs (
             continue;
         }
 
-        if (argv[argi][0] == '-')
-        {
-            switch (argv[argi][1])
-            {
-                case 'd': case 'D':
-                {   fDebug = 1;
+        if (argv[argi][0] == '-') {
+
+            switch (argv[argi][1]) {
+
+                case 'd': case 'D': {
+                    fDebug = 1;
                     break;
                 }
 
-                default:
-                {   ErrorPrint (L"Unrecognized command option (%s).",
-                                argv[argi]);
+                default: {
+                    ErrorPrint (L"Unrecognized command option (%s).", argv[argi]);
                     exit (1);
                     break;
                 }
@@ -552,14 +561,15 @@ bool JDContext::ParseArgs (
     return true;
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JDContext::ScanEnvironment ()
 {
     //--------------------------------------------------------------------------
     // Scans the current environment and initializes the context object
     // accordingly.  This includes the current working directory, the current
     // drive mappings, the data file, and so forth.
-    // 
+    //
     // Returns true if the scan/initialization succeeded, otherwise false.
     //--------------------------------------------------------------------------
 
@@ -577,7 +587,8 @@ bool JDContext::ScanEnvironment ()
     return true;
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JDContext::ScanDrives ()
 {
     //--------------------------------------------------------------------------
@@ -588,7 +599,8 @@ bool JDContext::ScanDrives ()
     return true;
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JDContext::Load ()
 {
     //--------------------------------------------------------------------------
@@ -604,30 +616,24 @@ bool JDContext::Load ()
 
     _wgetenv_s (&getEnvRetVal, NULL, 0, L"JUMPDATA");
 
-    if (getEnvRetVal)
-    {
+    if (getEnvRetVal) {
+
         m_jumpdata_filename = new wchar_t [getEnvRetVal];
 
-        if (0 != _wgetenv_s (&getEnvRetVal, m_jumpdata_filename, getEnvRetVal,
-                            L"JUMPDATA"))
+        if (0 != _wgetenv_s (&getEnvRetVal, m_jumpdata_filename, getEnvRetVal, L"JUMPDATA"))
             return false;
 
         DPrint (L"Using %%JUMPDATA%%=\"%s\"", m_jumpdata_filename);
     }
     else
-    {   
+    {
         DPrint (L"JUMPDATA is not defined.");
 
         _wgetenv_s (&getEnvRetVal, NULL, 0, L"USERPROFILE");
 
-        if (!getEnvRetVal)
-        {
+        if (!getEnvRetVal) {
             DPrint (L"USERPROFILE is not defined. Hmmm, didn't expect THAT.");
-
-            ErrorPrint (
-                L"Couldn't find jumpdir.dat file. Neither JUMPDATA nor\n"
-                L"USERPROFILE is defined.");
-
+            ErrorPrint (L"Couldn't find jumpdir.dat file. Neither JUMPDATA nor\nUSERPROFILE is defined.");
             exit (1);
         }
 
@@ -636,8 +642,7 @@ bool JDContext::Load ()
 
         m_jumpdata_filename = new wchar_t [fnamesize];
 
-        if (0 != _wgetenv_s(&getEnvRetVal, m_jumpdata_filename,
-                            fnamesize, L"USERPROFILE"))
+        if (0 != _wgetenv_s(&getEnvRetVal, m_jumpdata_filename, fnamesize, L"USERPROFILE"))
             return false;
 
         wcscat_s (m_jumpdata_filename, fnamesize, datname);
@@ -649,31 +654,32 @@ bool JDContext::Load ()
 }
 
 
-
-//==============================================================================
+//==================================================================================================
 bool JDContext::Store ()
 {
     return m_jumpData.Store (m_jumpdata_filename);
 }
 
-//==============================================================================
+
+//==================================================================================================
 JumpData::JumpData ()
   : m_datafile_size (0),
     m_datafile (0)
 {
 }
 
-//==============================================================================
+
+//==================================================================================================
 JumpData::~JumpData ()
 {
-    if (m_datafile)
-    {
+    if (m_datafile) {
         delete [] m_datafile;
         m_datafile_size = 0;
     }
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JumpData::Load (const wchar_t *filename)
 {
     DPrint (L"Reading jumpdata from \"%s\".", filename);
@@ -694,16 +700,16 @@ bool JumpData::Load (const wchar_t *filename)
     // entity.
 
     FILE* datafile;
-    
-    if (0 != _wfopen_s (&datafile, filename, L"rb"))
-    {   ErrorPrint (L"Couldn't open data file \"%s\".", filename);
+
+    if (0 != _wfopen_s (&datafile, filename, L"rb")) {
+        ErrorPrint (L"Couldn't open data file \"%s\".", filename);
         return false;
     }
 
     // Seek to the end to determine the size of the entire data file.
 
-    if (0 != fseek (datafile, 0, SEEK_END))
-    {   ErrorPrint (L"Couldn't seek in data file \"%s\".", filename);
+    if (0 != fseek (datafile, 0, SEEK_END)) {
+        ErrorPrint (L"Couldn't seek in data file \"%s\".", filename);
         return false;
     }
 
@@ -714,9 +720,8 @@ bool JumpData::Load (const wchar_t *filename)
 
     m_datafile = new char [m_datafile_size];
 
-    if (0 == m_datafile)
-    {   ErrorPrint (L"Couldn't allocate %ld bytes for jumpdir data.\n",
-                    m_datafile_size);
+    if (0 == m_datafile) {
+        ErrorPrint (L"Couldn't allocate %ld bytes for jumpdir data.\n", m_datafile_size);
         return false;
     }
 
@@ -724,8 +729,8 @@ bool JumpData::Load (const wchar_t *filename)
 
     size_t nItemsRead = fread (m_datafile, 1, m_datafile_size, datafile);
 
-    if (nItemsRead != (m_datafile_size))
-    {   ErrorPrint (L"Read failed on data file \"%s\".", filename);
+    if (nItemsRead != (m_datafile_size)) {
+        ErrorPrint (L"Read failed on data file \"%s\".", filename);
         return false;
     }
 
@@ -734,40 +739,40 @@ bool JumpData::Load (const wchar_t *filename)
     return true;
 }
 
-//==============================================================================
+
+//==================================================================================================
 bool JumpData::Store (const wchar_t *filename) const
 {
     FILE *datafile;
 
-    if (0 != _wfopen_s (&datafile, filename, L"wb"))
-    {   ErrorPrint (L"Couldn't create data file \"%s\".", filename);
+    if (0 != _wfopen_s (&datafile, filename, L"wb")) {
+        ErrorPrint (L"Couldn't create data file \"%s\".", filename);
         return false;
     }
 
 
-    if (1 != fwrite (m_header, sizeof(JDFileHeader), 1, datafile))
-    {   ErrorPrint (L"Error while writing data file.");
+    if (1 != fwrite (m_header, sizeof(JDFileHeader), 1, datafile)) {
+        ErrorPrint (L"Error while writing data file.");
         return false;
     }
 
     #if 0
-    for (int i=0;  i <= 0xff;  ++i)
-    {
+    for (int i=0;  i <= 0xff;  ++i) {
         unsigned char c = static_cast<unsigned char> (i);
-        if (1 != fwrite (&c, sizeof(unsigned char), 1, datafile))
-        {   ErrorPrint (L"Error while writing data file.");
+        if (1 != fwrite (&c, sizeof(unsigned char), 1, datafile)) {
+            ErrorPrint (L"Error while writing data file.");
             return false;
         }
     }
 
     unsigned int x = 0x11223344;
-    if (1 != fwrite (&x, sizeof(unsigned int), 1, datafile))
-    {   ErrorPrint (L"Error while writing data file.");
+    if (1 != fwrite (&x, sizeof(unsigned int), 1, datafile)) {
+        ErrorPrint (L"Error while writing data file.");
         return false;
     }
 
-    if (0 > fputws (L"[# Hello world!\n]", datafile))
-    {   ErrorPrint (L"Error while writing data file.");
+    if (0 > fputws (L"[# Hello world!\n]", datafile)) {
+        ErrorPrint (L"Error while writing data file.");
         return false;
     }
     #endif
