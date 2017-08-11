@@ -36,13 +36,7 @@ L"    This command changes the directory as specified.",
 
 // Program Parameters and Constants
 
-bool fDebug = false;
-
-const int c_version_string_length = 16;
-
-const wchar_t c_verstring[c_version_string_length] = L"JumpDir v001 \r\n";
-
-const unsigned int c_strpool_growsize = 2 * MAX_PATH + 2;
+const bool fDebug = false;
 
 
 // Forward Declarations
@@ -71,12 +65,9 @@ class JDFileHeader
         automap        {true},
         numHistEntries {0}
     {
-        wcscpy_s (mc_verstring, c_version_string_length, c_verstring);
     }
 
     // Data Fields
-
-    wchar_t mc_verstring[c_version_string_length];    // Data File Tag
 
     int          maxHistSize;     // Max Number of History Entries
     bool         dirEcho;         // Echo new directories?
