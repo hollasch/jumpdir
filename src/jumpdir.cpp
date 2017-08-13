@@ -38,15 +38,6 @@ static const wchar_t *usage[] = {
 };
 
 
-// Forward Declarations
-
-void DPrint        (const wchar_t *format, ...);
-void ErrorPrint    (const wchar_t *format, ...);
-void PrintUsage    ();
-void SlashBackward (wchar_t *str);
-void SlashForeward (wchar_t *str);
-bool wstreqic      (const wchar_t *str1, const wchar_t *str2);
-
 
 //======================================================================================================================
 //                                                                                                   Utility Functions
