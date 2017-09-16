@@ -40,13 +40,13 @@ static const wchar_t *usage[] = {
 
 
 //======================================================================================================================
-//                                                                                                   Utility Functions
+// Utility Functions
 //======================================================================================================================
 
 void PrintUsage () {
-    //--------------------------------------------------------------------------
+
     // Prints out usage information for this tool.
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     int i;
 
@@ -59,12 +59,14 @@ void PrintUsage () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 void DPrint (const wchar_t *format, ...) {
+
     // Prints one line of debug information. The formatted string does not need a carriage return.
     //
     // 'format' - a printf-style format string
     // ...      - the remainder of the printf-style arguments
+    //----------------------------------------------------------------------------------------------
 
     if (!fDebug) return;
 
@@ -79,8 +81,13 @@ void DPrint (const wchar_t *format, ...) {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 void ErrorPrint (const wchar_t *format, ...) {
+
+    // Prints a printf-style message plus arguments to the error output stream, followed by a
+    // carriage return.
+    //----------------------------------------------------------------------------------------------
+
     va_list vl;
     va_start (vl, format);
 
@@ -92,18 +99,23 @@ void ErrorPrint (const wchar_t *format, ...) {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 inline bool wstreqic (const wchar_t *str1, const wchar_t *str2) {
-    // Returns true if two strings are non-null and equal, ignoring case.
-    //
-    // Parameters 'str1' and 'str2' are two const pointers to strings, which may be null.
+
+    // Returns true if the two strings are non-null and equal, ignoring case. Either string
+    // argument may be null.
+    //----------------------------------------------------------------------------------------------
 
     return (str1 != 0) && (str2 != 0) && (0 == _wcsicmp(str1,str2));
 }
 
 
-//==================================================================================================
-void SlashForeward (wchar_t *str) {
+//--------------------------------------------------------------------------------------------------
+void SlashForward (wchar_t *str) {
+
+    // Given a string pointer, converts all back slashes to forward slashes.
+    //----------------------------------------------------------------------------------------------
+
     wchar_t *ptr;
 
     for (ptr=str;  *ptr;  ++ptr) {
@@ -113,8 +125,12 @@ void SlashForeward (wchar_t *str) {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 void SlashBackward (wchar_t *str) {
+
+    // Given a string pointer, converts all forward slashes to back slashes.
+    //----------------------------------------------------------------------------------------------
+
     wchar_t *ptr;
 
     for (ptr=str;  *ptr;  ++ptr) {
@@ -123,8 +139,14 @@ void SlashBackward (wchar_t *str) {
 }
 
 
-//==================================================================================================
+
+//--------------------------------------------------------------------------------------------------
 static bool isWildStr (const wchar_t* str) {
+
+    // Returns true if the given string begins with a wildcard character sequence.
+    // This includes '?', '*', '**', or '...'.
+    //----------------------------------------------------------------------------------------------
+
     return (*str == L'?')
         || (*str == L'*')
         || ((str[0] == L'.') && (str[1] == L'.') && (str[2] == L'.'));
@@ -133,7 +155,7 @@ static bool isWildStr (const wchar_t* str) {
 
 
 //======================================================================================================================
-//                                                                                                  Class JDFileHeader
+// Class JDFileHeader
 //======================================================================================================================
 
 class JDFileHeader {
@@ -160,8 +182,9 @@ class JDFileHeader {
 };
 
 
+
 //======================================================================================================================
-//                                                                                                     Struct DirEntry
+// Struct DirEntry
 //======================================================================================================================
 
 struct DirEntry {
@@ -175,8 +198,9 @@ struct DirEntry {
 };
 
 
+
 //======================================================================================================================
-//                                                                                                     Class JDMemPool
+// Class JDMemPool
 //======================================================================================================================
 
 class JDMemPool {
@@ -190,13 +214,15 @@ class JDMemPool {
     void         *m_heap;
 };
 
-//==================================================================================================
-void JDMemPool::Attach (void *block, unsigned int size) {
-    // This method sets the block and size for the memory pool, as read from the
-    // data file. This memory pool can be effectively detached by calling it
-    // with (0,0) as the arguments.
 
+//--------------------------------------------------------------------------------------------------
+void JDMemPool::Attach (void *block, unsigned int size) {
+
+    // This method sets the block and size for the memory pool, as read from the data file. This
+    // memory pool can be effectively detached by calling it with (0,0) as the arguments.
+    //
     // Ensure that the block is non-null if the size is non-zero.
+    //----------------------------------------------------------------------------------------------
 
     assert ((size == 0) == (block == NULL));
 
@@ -204,8 +230,10 @@ void JDMemPool::Attach (void *block, unsigned int size) {
     m_size = size;
 }
 
+
+
 //======================================================================================================================
-//                                                                                                      Class JumpData
+// Class JumpData
 //======================================================================================================================
 
 class JumpData {
@@ -228,7 +256,7 @@ class JumpData {
 };
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 JumpData::~JumpData () {
     if (m_datafile) {
         delete [] m_datafile;
@@ -237,7 +265,7 @@ JumpData::~JumpData () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JumpData::Load (const wchar_t *filename) {
     DPrint (L"Reading jumpdata from \"%s\".", filename);
 
@@ -297,7 +325,7 @@ bool JumpData::Load (const wchar_t *filename) {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JumpData::Store (const wchar_t *filename) const {
     FILE *datafile;
 
@@ -339,8 +367,9 @@ bool JumpData::Store (const wchar_t *filename) const {
 }
 
 
+
 //======================================================================================================================
-//                                                                                                     Class JDContext
+// Class JDContext
 //======================================================================================================================
 
 class JDContext {
@@ -387,7 +416,7 @@ class JDContext {
 };
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 JDContext::JDContext (FileSysProxy& fsProxy)
   : m_fsProxy{fsProxy}, m_pathMatcher{fsProxy} {
 
@@ -402,15 +431,15 @@ JDContext::JDContext (FileSysProxy& fsProxy)
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 JDContext::~JDContext () {
     if (m_jumpdata_filename) delete m_jumpdata_filename;
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::ParseArgs (int argc, const wchar_t * const argv[]) {
-    //--------------------------------------------------------------------------
+
     // Parses the command-line arguments before executing commands. This
     // function is also responsible for reading in the data file.
     //
@@ -418,7 +447,7 @@ bool JDContext::ParseArgs (int argc, const wchar_t * const argv[]) {
     // the standard command line arguments.
     //
     // Returns true if the parse succeeded, otherwise false.
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     int argi;     // Argument Index
 
@@ -465,9 +494,9 @@ bool JDContext::ParseArgs (int argc, const wchar_t * const argv[]) {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::ScanEnvironment () {
-    //--------------------------------------------------------------------------
+
     // Scans the current environment and initializes the context object
     // accordingly.  This includes the current working directory, the current
     // drive mappings, the data file, and so forth.
@@ -480,7 +509,7 @@ bool JDContext::ScanEnvironment () {
     if (!_wgetcwd (m_cwd, _countof(m_cwd)))
         return false;
 
-    SlashForeward (m_cwd);
+    SlashForward (m_cwd);
 
     if (!ScanDrives()) return false;
 
@@ -490,25 +519,24 @@ bool JDContext::ScanEnvironment () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::ScanDrives () {
-    //--------------------------------------------------------------------------
+
     // Scan the currently mapped drives for type and other info. Returns True if
     // the scan was successful, otherwise false.
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     return true;
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::Load () {
-    //--------------------------------------------------------------------------
-    // Loads the jumpdir data file and initializes the related fields in the
-    // JDContext object.
+
+    // Loads the jumpdir data file and initializes the related fields in the JDContext object.
     //
     // Returns True if the scan was successful, otherwise false.
-    //--------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
 
     DPrint (L"Loading jump data.");
 
@@ -552,13 +580,13 @@ bool JDContext::Load () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::Store () {
     return m_jumpData.Store (m_jumpdata_filename);
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 void JDContext::EnumerateNetMaps () {
     DPrint (L"Enumerating network drive mappings.");
 
@@ -571,14 +599,13 @@ void JDContext::EnumerateNetMaps () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::HandleTrivialChange () {
-    //--------------------------------------------------------------------------
-    // This routine handles trivial target directories. This includes null
-    // directories, and non-wildcard directories that begin with '.' or '..'.
-    // This routine assumes that the m_destwild member variable has already been
-    // set properly.
-    //--------------------------------------------------------------------------
+
+    // This routine handles trivial target directories. This includes null directories, and
+    // non-wildcard directories that begin with '.' or '..'. This routine assumes that the
+    // m_destwild member variable has already been set properly.
+    //----------------------------------------------------------------------------------------------
 
     DPrint (L"Trivial change?");
 
@@ -636,14 +663,14 @@ bool JDContext::HandleTrivialChange () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::Jump () {
-    //--------------------------------------------------------------------------
+
     // Jumps to the destination directory.
     //
-    // Returns true if a match was found, and the function successfully changed
-    // to that matching directory.
-    //--------------------------------------------------------------------------
+    // Returns true if a match was found, and the function successfully changed to that matching
+    // directory.
+    //----------------------------------------------------------------------------------------------
 
     if (HandleTrivialChange()) return true;
 
@@ -668,7 +695,7 @@ bool JDContext::Jump () {
 }
 
 
-//==================================================================================================
+//--------------------------------------------------------------------------------------------------
 bool JDContext::AppendDest (const wchar_t *path) {
     size_t roomleft = sizeof(m_dest) - m_destlen - 1;
 
@@ -698,7 +725,7 @@ bool JDContext::AppendDest (const wchar_t *path) {
 
 
 //======================================================================================================================
-//                                                                                                        Main Program
+// Main Program
 //======================================================================================================================
 
 int wmain (int argc, const wchar_t * const argv[]) {
