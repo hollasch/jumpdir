@@ -8,3 +8,4 @@ out/
 *.pdb
 *.sdf
 *.suo
+*.vcxproj.user
