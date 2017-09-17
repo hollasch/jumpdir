@@ -155,35 +155,6 @@ static bool isWildStr (const wchar_t* str) {
 
 
 //======================================================================================================================
-// Class JDFileHeader
-//======================================================================================================================
-
-class JDFileHeader {
-  public:
-
-    JDFileHeader ()
-      : maxHistSize    {-1},
-        dirEcho        {false},
-        verbose        {false},
-        netSearch      {true},
-        automap        {true},
-        numHistEntries {0}
-    {
-    }
-
-    // Data Fields
-
-    int          maxHistSize;     // Max Number of History Entries
-    bool         dirEcho;         // Echo new directories?
-    bool         verbose;         // Echo resultant shell commands?
-    bool         netSearch;       // Search network paths?
-    bool         automap;         // Automatically map network drives?
-    unsigned int numHistEntries;  // Current count of path history entries
-};
-
-
-
-//======================================================================================================================
 // Struct DirEntry
 //======================================================================================================================
 
@@ -233,13 +204,42 @@ void JDMemPool::Attach (void *block, unsigned int size) {
 
 
 //======================================================================================================================
+// Class JDFileHeader
+//======================================================================================================================
+
+class JDFileHeader {
+  public:
+
+    JDFileHeader ()
+      : maxHistSize    {-1},
+        dirEcho        {false},
+        verbose        {false},
+        netSearch      {true},
+        automap        {true},
+        numHistEntries {0}
+    {
+    }
+
+    // Data Fields
+
+    int          maxHistSize;     // Max Number of History Entries
+    bool         dirEcho;         // Echo new directories?
+    bool         verbose;         // Echo resultant shell commands?
+    bool         netSearch;       // Search network paths?
+    bool         automap;         // Automatically map network drives?
+    unsigned int numHistEntries;  // Current count of path history entries
+};
+
+
+
+//======================================================================================================================
 // Class JumpData
 //======================================================================================================================
 
 class JumpData {
   public:
 
-    JumpData() : m_datafile_size{0}, m_datafile{0} {};
+    JumpData() : m_rawData{nullptr} {};
     ~JumpData();
 
     bool Load  (const wchar_t *filename);
@@ -251,16 +251,14 @@ class JumpData {
     wchar_t      *m_strpool;
 
   private:
-    size_t  m_datafile_size;   // Input Jump Data Size (in bytes)
-    void   *m_datafile;        // Jump Data File Contents
+    void *m_rawData;         // Raw Data File Contents
 };
 
 
 //--------------------------------------------------------------------------------------------------
 JumpData::~JumpData () {
-    if (m_datafile) {
-        delete [] m_datafile;
-        m_datafile_size = 0;
+    if (m_rawData) {
+        delete [] m_rawData;
     }
 }
 
@@ -284,42 +282,42 @@ bool JumpData::Load (const wchar_t *filename) {
     // carriage-return/linefeeds may be logically collapsed into a single
     // entity.
 
-    FILE* datafile;
+    FILE* dataFile;
 
-    if (0 != _wfopen_s (&datafile, filename, L"rb")) {
+    if (0 != _wfopen_s (&dataFile, filename, L"r,ccs=UTF-8")) {
         ErrorPrint (L"Couldn't open data file \"%s\".", filename);
         return false;
     }
 
     // Seek to the end to determine the size of the entire data file.
 
-    if (0 != fseek (datafile, 0, SEEK_END)) {
+    if (0 != fseek (dataFile, 0, SEEK_END)) {
         ErrorPrint (L"Couldn't seek in data file \"%s\".", filename);
         return false;
     }
 
-    m_datafile_size = ftell (datafile);
-    rewind (datafile);
+    auto dataCount = ftell (dataFile);
+    rewind (dataFile);
 
-    // Allocat the buffer for the data file contents.
+    // Allocate the buffer for the data file contents.
 
-    m_datafile = new char [m_datafile_size];
+    m_rawData = new char [dataCount + 100];                                            // !!! TEMPORARY !!! buffer for experimentation
 
-    if (0 == m_datafile) {
-        ErrorPrint (L"Couldn't allocate %ld bytes for jumpdir data.\n", m_datafile_size);
+    if (m_rawData == nullptr) {
+        ErrorPrint (L"Couldn't allocate %ld bytes for jumpdir data.\n", dataCount);
         return false;
     }
 
     // Read the data file into the data block and close the file.
 
-    size_t nItemsRead = fread (m_datafile, 1, m_datafile_size, datafile);
+    size_t nItemsRead = fread_s (m_rawData, dataCount, 1, dataCount, dataFile);
 
-    if (nItemsRead != (m_datafile_size)) {
+    if (nItemsRead != dataCount) {
         ErrorPrint (L"Read failed on data file \"%s\".", filename);
         return false;
     }
 
-    fclose (datafile);
+    fclose (dataFile);
 
     return true;
 }
@@ -327,6 +325,11 @@ bool JumpData::Load (const wchar_t *filename) {
 
 //--------------------------------------------------------------------------------------------------
 bool JumpData::Store (const wchar_t *filename) const {
+
+                                                                                                        // !!! TEMPORARY !!!
+    DPrint (L"Skipping DB store for development.");
+    return true;
+
     FILE *datafile;
 
     if (0 != _wfopen_s (&datafile, filename, L"wb")) {
