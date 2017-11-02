@@ -1,6 +1,7 @@
 # Git Ignore File for 'JumpDir' Project
 
 out/
+build/win/enc_temp_folder/
 
 *.exe
 *.ilk
