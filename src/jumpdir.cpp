@@ -731,6 +731,7 @@ bool JDContext::AppendDest (const char* path) {
 // Main Program
 //======================================================================================================================
 
+// int wmain (int argc, const wchar_t* const argv[]) {
 int main (int argc, const char* const argv[]) {
 
     // The main entry point for the jumpdir program. Returns the return code for the entire program.
