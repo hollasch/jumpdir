@@ -20,6 +20,13 @@
     <ClCompile Include="..\..\src\ext\PathMatcher\pathmatcher.cpp" />
     <ClCompile Include="..\..\src\jumpdir.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\CHANGELOG.md" />
+    <None Include="..\..\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\LICENSE.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5D92EEA5-DDE7-4A63-A171-C0E8AABE5A31}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
