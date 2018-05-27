@@ -508,7 +508,7 @@ bool JDContext::ScanEnvironment () {
 
     // Load the current working directory.
 
-    if (!_getcwd (m_cwd, _countof(m_cwd)))
+    if (!_getcwd (m_cwd, static_cast<int>(std::size(m_cwd))))
         return false;
 
     SlashForward (m_cwd);
