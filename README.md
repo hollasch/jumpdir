@@ -11,9 +11,9 @@ particular, I am trying to work out the best way to achieve proper Unicode handl
 cross-platform capability. Both of these, I think, are fairly settled now, particularly with C++'s
 new `std::filesystem` as a way to navigate filesystems on many platforms.
 
-Before re-engaging in this project, I'm working to finalize the transition of [pathmatch] to use
+Before re-engaging in this project, I'm working to finalize the transition of [pathmatch][] to use
 `std::filesystem`. I may also use that project as my learning experiment for CMake. In addition, I
-may choose to adopt [LSON] as my data storage format, which will also delay things quite a bit.
+may choose to adopt [LSON][] as my data storage format, which will also delay things quite a bit.
 
 
 ----
