@@ -59,9 +59,9 @@ class DirectoryIteratorWindows : public DirectoryIterator {
     const wchar_t* name() const override;
 
   private:
-    bool            m_started;      // True => directory iteration started
-    HANDLE          m_findHandle;   // Directory Find Context
-    WIN32_FIND_DATA m_findData;     // Directory Find Entry
+    bool             m_started;      // True => directory iteration started
+    HANDLE           m_findHandle;   // Directory Find Context
+    WIN32_FIND_DATAW m_findData;     // Directory Find Entry
 };
 
 

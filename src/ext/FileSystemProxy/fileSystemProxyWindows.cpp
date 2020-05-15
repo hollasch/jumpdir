@@ -32,7 +32,7 @@ using namespace FSProxy;
 DirectoryIteratorWindows::DirectoryIteratorWindows (const wstring path)
   : m_started(false)
 {
-    m_findHandle = FindFirstFile(path.c_str(), &m_findData);
+    m_findHandle = FindFirstFileW(path.c_str(), &m_findData);
 }
 
 DirectoryIteratorWindows::~DirectoryIteratorWindows()
@@ -47,8 +47,8 @@ bool DirectoryIteratorWindows::next()
     // Advances the iterator to the first/next entry.
 
     if (m_started)
-        return 0 != FindNextFile(m_findHandle, &m_findData);
-    
+        return 0 != FindNextFileW(m_findHandle, &m_findData);
+
     m_started = true;
     return m_findHandle != INVALID_HANDLE_VALUE;
 }
