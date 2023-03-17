@@ -4,6 +4,8 @@
 // Copyright 2017 Steve Hollasch. All rights reserved.
 //======================================================================================================================
 
+#include "json.hpp"
+
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,6 +19,7 @@
 
 using namespace PMatcher;
 using namespace FSProxy;
+using json = nlohmann::json;
 
 
 // Program Parameters and Constants
